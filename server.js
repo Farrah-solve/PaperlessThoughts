@@ -4,7 +4,10 @@ var fs = require("fs");
 var dbjson = require("./db/db.json");
 
 var app = express();
-var PORT = process.env.PORT || 8000;
+var PORT = process.env.PORT || 3001;
+app.listen(PORT, function() {
+    console.log("App listening on PORT " + PORT);
+});
 
 app.use(express.urlencoded({ extended: true}));
 app.use(express.json());
@@ -12,16 +15,16 @@ app.use(express.static('public'));
 require("./routes/api/notes")(app);
 require("./routes/html")(app);
 
-app.get('/', function(_req,res) {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+app.get('/', function(req,res) {
+    res.sendFile(path.join(__dirname, "public/index.html"));
 });
 
 app.get('/notes', function(_req,res) {
-    res.sendFile(path.join(__dirname, 'public', 'notes.html'));
+    res.sendFile(path.join(__dirname, "public/notes.html"));
 });
 
 
-app.get('/api/notes', function(_req,res) {
+app.get('/routes/api/notes', function(_req,res) {
     fs.readFile('./db/db.json', 'utf8', function(err,_data) {
         if (err){
             throw err;
@@ -30,7 +33,7 @@ app.get('/api/notes', function(_req,res) {
     res.json(dbjson);
 });
 
-app.post('/api/notes', function(req,res) {
+app.post('/routs/api/notes', function(req,res) {
     var newpost = req.body;
 
     function addNewPost(post) {
@@ -47,7 +50,7 @@ app.post('/api/notes', function(req,res) {
     });
     res.json(dbjson);
 });
-app.delete('/api/notes/:id', function(req,res) {
+app.delete('/routs/api/notes/:id', function(req,res) {
     var noteId = req.params.id;
 
     dbjson.splice(noteId,1);
@@ -64,6 +67,4 @@ app.delete('/api/notes/:id', function(req,res) {
 });
 
 
-app.listen(PORT, function() {
-    console.log("App listening on PORT " + PORT);
-});
+
