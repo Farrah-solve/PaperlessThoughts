@@ -9,6 +9,8 @@ var PORT = process.env.PORT || 8000;
 app.use(express.urlencoded({ extended: true}));
 app.use(express.json());
 app.use(express.static('public'));
+require("./routes/api/notes")(app);
+require("./routes/html")(app);
 
 app.get('/', function(_req,res) {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
